@@ -11,9 +11,27 @@ export interface Product {
   isUndercost: boolean;
   size: Size;
   color: Color;
+  sizes: ProductSizes[];
+  colors: ProductColors[];
   images: Image[];
   comments: Comment[];
 };
+
+export interface ProductSizes {
+
+  productId: string
+  size: Size
+  sizeId: string
+
+}
+
+export interface  ProductColors {
+
+  productId: string
+  color: Color
+  colorId: string
+
+}
 
 export interface Image {
   id: string;

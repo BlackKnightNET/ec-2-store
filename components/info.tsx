@@ -4,13 +4,15 @@ import { ShoppingCart } from "lucide-react";
 import { BiLogoMessenger, BiLogoWhatsapp } from "react-icons/bi";
 import Currency  from "@/components/ui/currency";
 import Button from "@/components/ui/Button";
-import { Product } from "@/types";
+import { Product, ProductColors, ProductSizes } from "@/types";
 import useCart from "@/hooks/use-cart";
 import IconButton  from "@/components/ui/icon-button";
 import useMessage from "@/components/ui/open-Messenger";
 import useMessageW from "@/components/ui/open-wapp";
 import { MouseEventHandler } from "react";
 import Image from "next/image";
+
+
 
 interface InfoProps {
   data: Product
@@ -34,6 +36,8 @@ const Info: React.FC<InfoProps> = ({ data }) => {
 
     messageW.addItemToWapp(data);
   };
+
+
   return (
     <div className="bg-white shadow-md p-4 sm:p-6 md:p-8 lg:p-10 rounded-lg">
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{data?.name}</h1>
@@ -52,8 +56,21 @@ const Info: React.FC<InfoProps> = ({ data }) => {
         </div>
   
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-black">Ngjyra:</h3>
-          <div className="h-6 w-6 rounded-full border border-gray-600" style={{ backgroundColor: data?.color?.value }} />
+          <h3 className="font-semibold text-black">Colors:</h3>
+          {
+            data.colors.map((color: ProductColors) => (
+              <div key={color.color.id} className="h-6 w-6 rounded-full border border-gray-600" style={{ backgroundColor: color?.color?.value }} />
+            ))
+          }
+        </div>
+
+        <div className="flex items-center gap-2">
+          <h3 className="font-semibold text-black">Sizes:</h3>
+          {
+            data.sizes.map((size : ProductSizes) => (
+              <div key={size.size.name} className="h-6 w-6 ">{size?.size?.value}</div>
+            ))
+          }
         </div>
         <div className="flex items-center gap-2">
         <h3 className="font-semibold text-black">Sasia ne gjendje:</h3>

@@ -6,7 +6,7 @@ import Container from "@/components/ui/container";
 import SubNavbar from "@/components/subnavbar";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
-import MyCarousel from "@/components/carosel";
+
 import SliderPage from "@/components/ui/slider";
 import BrandSelect from "@/components/ui/brand-slider";
 
@@ -14,7 +14,7 @@ export const revalidate = 0;
 
 const HomePage = async () => {
   const products = await getProducts({ isFeatured: true });
-  const billboard = await getBillboard("12d8ef7e-b5c3-4c8e-888e-25ad7da2a3b4");
+  const billboard = await getBillboard("7826c3a2-ff22-4e1f-9dda-ce5181b05b51");
   const { userId } = await auth();
 
   console.log(userId);
@@ -32,6 +32,7 @@ const HomePage = async () => {
     <Container>
       <SubNavbar />
       <div className="space-y-1 pb-1 ">
+
         <Billboard data={billboard} />
         
         <div className="px-5 grid grid-cols-2 gap-2 lg:gap-6">
