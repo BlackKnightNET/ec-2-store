@@ -43,6 +43,8 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
   const filteredSubcategories = subcategories.filter(subcategory => subcategory.categoryId === params.categoryId);
   const category = await getCategory(params.categoryId);
 
+  console.log('test')
+
   return (
     <div className="bg-gray-100">
       <Container>

@@ -4,14 +4,20 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import { Product } from '@/types';
 
+interface ProductCart extends Product {
+  boughtColor: string; // Property for the individual product's bought color
+  boughtSize: string;  // Property for the individual product's bought size
+}
 
 interface CartStore {
-  items: Product[];
+  items: ProductCart[];
   addItem: (data: Product) => void;
   removeItem: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
   getQuantity: (id: string) => number;
+  setColor: (id: string, color: string) => void;
+  setBoughtSize: (id: string, size: string) => void;
   removeAll: () => void;
 }
 
@@ -30,7 +36,13 @@ const useCart = create(
         toast.success('Item quantity updated in cart.');
       } else {
         // If the item doesn't exist, add it with a quantity of 1
-        set({ items: [...currentItems, { ...data, quantity: 1 }] });
+        const newProduct: ProductCart = {
+          ...data,
+          quantity: 1,
+          boughtColor: '',  // You might want to initialize these properties
+          boughtSize: '',   // with appropriate default values
+        };
+        set({ items: [...currentItems, newProduct] });
         toast.success('Item added to cart.');
       }
     },
@@ -55,10 +67,21 @@ const useCart = create(
       const item = get().items.find((item) => item.id === id);
       return item ? item.quantity : 0;
     },
+    setColor: (id: string, color: string) => {
+      const updatedItems = get().items.map((item) =>
+        item.id === id ? { ...item, boughtColor: color } : item
+      );
+      set({ items: updatedItems });
+    },
+    setBoughtSize: (id: string, size: string) => {
+      const updatedItems = get().items.map((item) =>
+        item.id === id ? { ...item, boughtSize: size } : item
+      );
+      set({ items: updatedItems });
+    },
   }), {
     name: 'cart-storage',
     storage: createJSONStorage(() => localStorage),
   })
 );
-
 export default useCart;

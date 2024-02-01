@@ -9,7 +9,7 @@ import useCart from "@/hooks/use-cart";
 import IconButton  from "@/components/ui/icon-button";
 import useMessage from "@/components/ui/open-Messenger";
 import useMessageW from "@/components/ui/open-wapp";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 import Image from "next/image";
 
 
@@ -36,7 +36,16 @@ const Info: React.FC<InfoProps> = ({ data }) => {
 
     messageW.addItemToWapp(data);
   };
+  const [selectedSize, setSelectedSize] = useState<ProductSizes | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
+  const setColor = (color: string): void => {
+    setSelectedColor(color);
+    console.log(cart.items)
+  };
+  const setSize = (size: ProductSizes | null): void => {
+    setSelectedSize(size);
+  };
 
   return (
     <div className="bg-white shadow-md p-4 sm:p-6 md:p-8 lg:p-10 rounded-lg">
@@ -50,28 +59,48 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       <hr className="my-4" />
   
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-black">Tipi/Permasa:</h3>
-          <div>{data?.size?.value}</div>
-        </div>
+     
   
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-black">Colors:</h3>
-          {
-            data.colors.map((color: ProductColors) => (
-              <div key={color.color.id} className="h-6 w-6 rounded-full border border-gray-600" style={{ backgroundColor: color?.color?.value }} />
-            ))
-          }
-        </div>
+  <h3 className="font-semibold text-black">Colors:</h3>
+  <select
+    value={selectedColor || ''}
+    onChange={(e) => setColor(e.currentTarget.value)}
+    className="rounded-full border-spacing-1 border bg-white"
+  >
+    <option value="" disabled>
+      Select Color
+    </option>
+    {data.colors.map((color: ProductColors) => (
+      <option key={color.colorId} value={color.color?.name}>
+        {color.color?.name}
+      </option>
+    ))}
+  </select>
+</div>
 
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-black">Sizes:</h3>
-          {
-            data.sizes.map((size : ProductSizes) => (
-              <div key={size.size.name} className="h-6 w-6 ">{size?.size?.value}</div>
-            ))
-          }
-        </div>
+      <h3 className="font-semibold text-black">Sizes:</h3>
+      <select
+        value={selectedSize?.size?.value || ''}
+        onChange={(e) => {
+          const selectedSizeValue = e.target.value;
+          const newSize = data.sizes.find((size) => size.size?.value === selectedSizeValue) || null;
+          setSize(newSize);
+        }}
+        className="rounded-full border-spacing-1 border bg-white"
+      >
+        <option value="" disabled>
+          Select Size
+        </option>
+        {data.sizes.map((size: ProductSizes) => (
+          <option key={size.sizeId} value={size.size?.value}>
+            {size.size?.value}
+          </option>
+        ))}
+      </select>
+    </div>
+
         <div className="flex items-center gap-2">
         <h3 className="font-semibold text-black">Sasia ne gjendje:</h3>
           <div>{data?.quantity}</div>

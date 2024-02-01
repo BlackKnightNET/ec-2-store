@@ -27,6 +27,7 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
       setQuantity(newQuantity); // Update the quantity in the component's state
     }
   };
+
 const itemtotal = data.price* data.quantity ;
   return (
     <li className="flex py-6 border-b">
@@ -50,8 +51,8 @@ const itemtotal = data.price* data.quantity ;
           {/* Sasia ne gjendje: {data.quantity}  */}
         </div>
         <div className="flex items-center text-sm mb-2">
-          <p className="text-gray-500">Ngjyra: {data.color.name}</p>
-          <p className="ml-4 text-gray-500">Permasa: {data.size.name}</p>
+           <p className="text-gray-500">Color: {data.colors[0].color.name}</p>
+          <p className="ml-4 text-gray-500">SIZE: {data.sizes[0].sizeId}</p> 
         </div>
         <div className="flex items-center text-lg font-semibold text-black">
           <span className="mr-2">Cmimi:</span>

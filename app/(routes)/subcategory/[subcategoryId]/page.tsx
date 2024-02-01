@@ -40,6 +40,11 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
   const colors = await getColors({subcategoryId: params.subcategoryId} );
   const subcategory = await getSubategory(params.subcategoryId);
   
+  console.log(sizes)
+  console.log(colors)
+
+  console.log("THis page loads")
+
   return (
     <div className="bg-gray-100">
       <Container>
@@ -62,6 +67,7 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
                 valueKey="sizeId" 
                 name="Sizes" 
                 data={sizes}
+              
               />
               <Filter 
                 valueKey="colorId" 
