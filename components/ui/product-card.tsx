@@ -53,8 +53,10 @@ const ProductCard: React.FC<ProductCard> = ({
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
 
-    cart.addItem(data);
-  };
+    const color = data.colors[0].value; // Assuming colors is an array and you want the first color
+    const size = data.sizes[0].value
+    cart.addItem(data, color, size);
+};
   const mCharacters = 50; // Set the maximum number of characters
 
   const truncatedName =

@@ -11,20 +11,22 @@ interface ProductCart extends Product {
 
 interface CartStore {
   items: ProductCart[];
-  addItem: (data: Product) => void;
+  addItem: (data: Product, color: string, size: string) => void;
   removeItem: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
   getQuantity: (id: string) => number;
   setColor: (id: string, color: string) => void;
+  getColor: (id: string) => string;
   setBoughtSize: (id: string, size: string) => void;
+  getSize: (id: string) => string;
   removeAll: () => void;
 }
 
 const useCart = create(
   persist<CartStore>((set, get) => ({
     items: [],
-    addItem: (data: Product) => {
+    addItem: (data: Product, color: string, size: string) => {
       const currentItems = get().items;
       const existingItemIndex = currentItems.findIndex((item) => item.id === data.id);
 
@@ -35,49 +37,70 @@ const useCart = create(
         set({ items: updatedItems });
         toast.success('Item quantity updated in cart.');
       } else {
-        // If the item doesn't exist, add it with a quantity of 1
+        // If the item doesn't exist, add it with a quantity of 1        
         const newProduct: ProductCart = {
           ...data,
           quantity: 1,
-          boughtColor: '',  // You might want to initialize these properties
-          boughtSize: '',   // with appropriate default values
+          boughtColor: color,  // You might want to initialize these properties
+          boughtSize: size,   // with appropriate default values
         };
         set({ items: [...currentItems, newProduct] });
         toast.success('Item added to cart.');
       }
     },
     removeItem: (id: string) => {
-      set({ items: [...get().items.filter((item) => item.id !== id)] });
+      set((state) => ({
+        items: state.items.filter((item) => item.id !== id)
+      }));
       toast.success('Item removed from cart.');
     },
     removeAll: () => set({ items: [] }),
     increaseQuantity: (id: string) => {
-      const updatedItems = get().items.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      );
-      set({ items: updatedItems });
+      set((state) => ({
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      }));
     },
     decreaseQuantity: (id: string) => {
-      const updatedItems = get().items.map((item) =>
-        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-      );
-      set({ items: updatedItems });
+      set((state) => ({
+        items: state.items.map((item) =>
+          item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+        )
+      }));
     },
     getQuantity: (id: string) => {
       const item = get().items.find((item) => item.id === id);
       return item ? item.quantity : 0;
     },
     setColor: (id: string, color: string) => {
-      const updatedItems = get().items.map((item) =>
-        item.id === id ? { ...item, boughtColor: color } : item
+      set((state) => ({
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, boughtColor: color } : item
+        )
+      }));
+    },
+    getColor: (id: string) => {
+      console.log(id)
+      const item = get().items.find((item) =>
+        item.id === id
       );
-      set({ items: updatedItems });
+      console.log(item)
+      return item!.boughtColor
+    },
+    getSize: (id: string) => {
+      const item = get().items.find((item) =>
+        item.id === id
+      );
+      console.log(item)
+      return item!.boughtSize
     },
     setBoughtSize: (id: string, size: string) => {
-      const updatedItems = get().items.map((item) =>
-        item.id === id ? { ...item, boughtSize: size } : item
-      );
-      set({ items: updatedItems });
+      set((state) => ({
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, boughtSize: size } : item
+        )
+      }));
     },
   }), {
     name: 'cart-storage',

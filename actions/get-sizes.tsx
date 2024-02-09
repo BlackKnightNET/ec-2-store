@@ -13,7 +13,7 @@ const getSizes = async (query: Query): Promise<Size[]> => {
             subcategoryId: query.subcategoryId,
         },
     });
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-store" });
 
     return res.json();
 };

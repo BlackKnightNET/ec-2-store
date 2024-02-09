@@ -13,7 +13,7 @@ const getColors = async (query: Query): Promise <Color[]> =>{
             subcategoryId: query.subcategoryId,
         },
     });
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-store" });
 
     return res.json();
 

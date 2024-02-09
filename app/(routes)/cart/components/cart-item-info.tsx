@@ -23,3 +23,4 @@ const CartItemInfo: React.FC<CartItemInfoProps> = ({
 }
  
 export default CartItemInfo;
+

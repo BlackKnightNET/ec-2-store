@@ -18,6 +18,7 @@ export interface Product {
 };
 
 export interface ProductSizes {
+  value: any;
 
   productId: string
   size: Size
@@ -26,6 +27,7 @@ export interface ProductSizes {
 }
 
 export interface  ProductColors {
+  value: any;
 
   productId: string
   color: Color

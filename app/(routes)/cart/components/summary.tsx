@@ -46,6 +46,8 @@ const Summary = () => {
        productsBought: items.map((item) => ({
          id: item.id,
          quantity: item.quantity,
+         color: item.boughtColor,
+         size: item.boughtSize
        }))
     });
 
@@ -80,5 +82,6 @@ const Summary = () => {
 }
  
 export default Summary;
+
 
 

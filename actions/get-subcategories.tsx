@@ -19,7 +19,7 @@ const getSubcategories = async (query: Query): Promise<Subcategory[]> => {
   });
 
   
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-store" });
     const subcategories = await res.json();
     
     return subcategories;

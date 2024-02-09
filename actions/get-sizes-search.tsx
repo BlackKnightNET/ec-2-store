@@ -17,7 +17,7 @@ const getSizesSearch = async (query: Query) : Promise<Size[]> => {
         }
     });
 
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-store" });
     return res.json();
 }
 
